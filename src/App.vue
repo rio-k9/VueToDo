@@ -1,28 +1,71 @@
+<!-- This is like your Laravel App file, except all of the HTML has been cut out,
+and we are just left with the app div
+
+Here you would have something like an alerts component
+login component etc
+-->
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header></Header>
+    <AddToDo v-on:add-todo="addToDoItem"></AddToDo>
+    <ToDo v-bind:todos="todos" v-on:del-todo='deleteToDoItem'></ToDo>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import ToDo from './components/ToDo.vue';
+import AddToDo from './components/AddToDo.vue'
+import Header from './components/layout/Header.vue';
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    ToDo,
+    Header,
+    AddToDo
+  },
+  data() {
+    return {
+      todos: [
+        {
+          id: 1,
+          title: 'ToDo One',
+          completed: false
+        },
+        {
+          id: 2,
+          title: 'ToDo Two',
+          completed: true,
+        },
+        {
+          id: 3,
+          title: 'ToDo Three',
+          completed: false
+        }
+      ]
+    }
+  },
+  methods: {
+    deleteToDoItem(id) {
+      this.todos = this.todos.filter(todo => todo.id !== id);
+
+      //fetch del todo database usual provider apiCall
+    },
+    addToDoItem(newTodoItem) {
+      this.todos = [...this.todos, newTodoItem]
+
+      //fetch post todo database usual provider apiCall
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding:0;
+  }
+
+
 </style>
